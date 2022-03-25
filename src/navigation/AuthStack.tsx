@@ -1,14 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../screens/Account/Login';
 import {View} from 'react-native';
 import SignupScreen from '../screens/Account/SignUp';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Stack = createStackNavigator();
 
 const AuthStack = () => {
-  let routeName = 'Login';
+  let routeName: string = 'Login';
+  const [isFirstLaunch, setIsFirstLaunch] = useState<any>(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
+        setIsFirstLaunch(true);
+      } else {
+        setIsFirstLaunch(false);
+      }
+    }); // Add some error handling, also you can simply do setIsFirstLaunch(null)
+
+    GoogleSignin.configure({
+      webClientId:
+        '374769280161-cgf5rso649j6lk4plgf2opi0flntcji4.apps.googleusercontent.com',
+    });
+  }, []);
+
+  if (isFirstLaunch === null) {
+    return null;
+  } else if (isFirstLaunch === false) {
+    routeName = 'Login';
+  }
 
   return (
     <Stack.Navigator initialRouteName={routeName}>

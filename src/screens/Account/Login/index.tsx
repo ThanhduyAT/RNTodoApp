@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ScrollView, Image, Text, TouchableOpacity} from 'react-native';
 import FormButton from '../../../components/FormButton';
 import FormInput from '../../../components/FormInput';
 import SocialButton from '../../../components/SocialButton';
-
+import {AuthContext} from '../../../navigation/AuthProvider';
 import styles from './styles';
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const {login, googleLogin} = useContext(AuthContext);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -38,7 +40,7 @@ const LoginScreen = ({navigation}: any) => {
 
       <FormButton
         buttonTitle="Sign In"
-        // onPress={() => login(email, password)}
+        onPress={() => login(email, password)}
       />
 
       <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
@@ -58,7 +60,7 @@ const LoginScreen = ({navigation}: any) => {
         btnType="google"
         color="#de4d41"
         backgroundColor="#f5e7ea"
-        // onPress={() => googleLogin()}
+        onPress={() => googleLogin()}
       />
 
       <TouchableOpacity
