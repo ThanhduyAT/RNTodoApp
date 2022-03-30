@@ -1,17 +1,31 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Platform, Alert} from 'react-native';
 import FormInput from '../../../components/FormInput';
 import FormButton from '../../../components/FormButton';
 import SocialButton from '../../../components/SocialButton';
-import {AuthContext} from '../../../navigation/AuthProvider';
+import {requestSignUpEmailPassword} from '../../../store/auth/actions';
 import styles from './styles';
+import {useDispatch} from 'react-redux';
 
 const SignupScreen = ({navigation}: any) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const {register} = useContext(AuthContext);
+  const dispatch = useDispatch();
+
+  const handleSignUp = (email: string, password: string) => {
+    if (email && password && confirmPassword) {
+      if (password === confirmPassword) {
+        const user = {email, password};
+        dispatch(requestSignUpEmailPassword(user));
+      } else {
+        Alert.alert('Mat khau khong khop');
+      }
+    } else {
+      Alert.alert('Vui long nhap day du');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -34,7 +48,6 @@ const SignupScreen = ({navigation}: any) => {
         iconType="lock"
         secureTextEntry={true}
       />
-
       <FormInput
         labelValue={confirmPassword}
         onChangeText={(userPassword: string) =>
@@ -47,44 +60,8 @@ const SignupScreen = ({navigation}: any) => {
 
       <FormButton
         buttonTitle="Sign Up"
-        onPress={() => register(email, password)}
+        onPress={() => handleSignUp(email, password)}
       />
-
-      <View style={styles.textPrivate}>
-        <Text style={styles.color_textPrivate}>
-          By registering, you confirm that you accept our{' '}
-        </Text>
-        <TouchableOpacity onPress={() => Alert.alert('Terms Clicked!')}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-            Terms of service
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.color_textPrivate}> and </Text>
-        <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-          Privacy Policy
-        </Text>
-      </View>
-
-      {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign Up with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => {}}
-          />
-
-          <SocialButton
-            buttonTitle="Sign Up with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => {}}
-          />
-        </View>
-      ) : null}
-
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => navigation.navigate('Login')}>

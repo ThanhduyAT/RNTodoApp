@@ -2,7 +2,7 @@ import React from 'react';
 import Routes from './Routes';
 import {AuthProvider} from './AuthProvider';
 
-const Provider = () => {
+const Content = () => {
   return (
     <AuthProvider>
       <Routes />
@@ -10,4 +10,4 @@ const Provider = () => {
   );
 };
 
-export default Provider;
+export default Content;

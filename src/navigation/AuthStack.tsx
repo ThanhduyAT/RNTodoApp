@@ -1,14 +1,35 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../screens/Account/Login';
 import {View} from 'react-native';
 import SignupScreen from '../screens/Account/SignUp';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
 const AuthStack = () => {
-  let routeName = 'Login';
+  let routeName: string;
+  const [isFirstLaunch, setIsFirstLaunch] = useState<any>(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
+        setIsFirstLaunch(true);
+      } else {
+        setIsFirstLaunch(false);
+      }
+    });
+  }, []);
+
+  if (isFirstLaunch === null) {
+    return null;
+  } else if (isFirstLaunch === true) {
+    routeName = 'Onboarding';
+  } else {
+    routeName = 'Login';
+  }
 
   return (
     <Stack.Navigator initialRouteName={routeName}>

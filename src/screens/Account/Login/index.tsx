@@ -1,23 +1,34 @@
 import React, {useState} from 'react';
-import {ScrollView, Image, Text, TouchableOpacity} from 'react-native';
+import {ScrollView, Image, Text, TouchableOpacity, Alert} from 'react-native';
 import FormButton from '../../../components/FormButton';
 import FormInput from '../../../components/FormInput';
-import SocialButton from '../../../components/SocialButton';
-
 import styles from './styles';
+import {requestSignInEmailPassword} from '../../../store/auth/actions';
+import {useDispatch} from 'react-redux';
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const dispatch = useDispatch();
+
+  const handleSignIn = (email: string, password: string) => {
+    if (email && password) {
+      const user = {email, password};
+      dispatch(requestSignInEmailPassword(user));
+    } else {
+      Alert.alert('Vui long nhap dau du thong tin');
+    }
+  };
+
+  // const {login, googleLogin} = useContext(AuthContext);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={require('../../../assets/rn-social-logo.png')}
+        source={require('../../../assets/react-native-svg-transformer-allows-you-import-svg-aperture-science-innovators-logo-11562851994zqcpwozsvy.png')}
         style={styles.logo}
       />
-      <Text style={styles.text}>RN Social App</Text>
-
       <FormInput
         labelValue={email}
         onChangeText={(userEmail: string) => setEmail(userEmail)}
@@ -38,35 +49,12 @@ const LoginScreen = ({navigation}: any) => {
 
       <FormButton
         buttonTitle="Sign In"
-        // onPress={() => login(email, password)}
+        onPress={() => handleSignIn(email, password)}
       />
-
-      <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
-        <Text style={styles.navButtonText}>Forgot Password?</Text>
-      </TouchableOpacity>
-
-      <SocialButton
-        buttonTitle="Sign In with Facebook"
-        btnType="facebook"
-        color="#4867aa"
-        backgroundColor="#e6eaf4"
-        // onPress={() => fbLogin()}
-      />
-
-      <SocialButton
-        buttonTitle="Sign In with Google"
-        btnType="google"
-        color="#de4d41"
-        backgroundColor="#f5e7ea"
-        // onPress={() => googleLogin()}
-      />
-
       <TouchableOpacity
         style={styles.forgotButton}
         onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.navButtonText}>
-          Don't have an acount? Create here
-        </Text>
+        <Text style={styles.navButtonText}>Sign Up?</Text>
       </TouchableOpacity>
     </ScrollView>
   );
