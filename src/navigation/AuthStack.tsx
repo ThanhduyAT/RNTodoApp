@@ -5,12 +5,11 @@ import {View} from 'react-native';
 import SignupScreen from '../screens/Account/SignUp';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Stack = createStackNavigator();
 
 const AuthStack = () => {
-  let routeName: string = 'Login';
+  let routeName: string;
   const [isFirstLaunch, setIsFirstLaunch] = useState<any>(null);
 
   useEffect(() => {
@@ -21,17 +20,14 @@ const AuthStack = () => {
       } else {
         setIsFirstLaunch(false);
       }
-    }); // Add some error handling, also you can simply do setIsFirstLaunch(null)
-
-    GoogleSignin.configure({
-      webClientId:
-        '374769280161-cgf5rso649j6lk4plgf2opi0flntcji4.apps.googleusercontent.com',
     });
   }, []);
 
   if (isFirstLaunch === null) {
     return null;
-  } else if (isFirstLaunch === false) {
+  } else if (isFirstLaunch === true) {
+    routeName = 'Onboarding';
+  } else {
     routeName = 'Login';
   }
 

@@ -1,7 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { windowHeight, windowWidth } from '../../utils/Dimentions';
-
-const COLORS = {primary: '#1f145c', white: '#fff'};
+import colors from '../../utils/colors';
 
 const styles = StyleSheet.create({
   footer: {
@@ -11,17 +9,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: colors.LIGHT_GREY,
   },
-  inputContainer: {
-    height: 50,
-    paddingHorizontal: 20,
-    elevation: 40,
-    backgroundColor: COLORS.white,
-    flex: 1,
-    marginVertical: 20,
-    marginRight: 20,
-    borderRadius: 30,
+  textInputContainer: {
+    marginHorizontal: 20,
+    flexShrink: 1,
   },
   iconContainer: {
     width: '20%',
@@ -29,24 +21,37 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-
-  item: {
+  iconFolderContainer: {
+    width: '10%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  folderContainer: {
     padding: 20,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
     width: '100%',
     elevation: 0.5,
-    borderRadius: 7,
     marginVertical: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexGrow: 0,
+    flexDirection: 'row',
+    borderColor: '#ccc',
+    borderRadius: 3,
+    borderWidth: 1,
+    backgroundColor: '#fff',
+  },
+  inputContainer: {
+    marginHorizontal: 20,
+    flexShrink: 1,
+    flexWrap: 'wrap',
+    alignItems: 'stretch',
   },
   actionIcon: {
     height: 25,
     width: 25,
-    backgroundColor: COLORS.white,
+    backgroundColor: colors.BLUE_PICK,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
@@ -61,8 +66,8 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
     fontSize: 15,
-    color: COLORS.primary,
-  }
+    color: colors.GRAY_DOVE,
+  },
 });
 
 export default styles;

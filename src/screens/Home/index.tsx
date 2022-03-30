@@ -1,51 +1,81 @@
 import {
-  Text,
   View,
   FlatList,
   TextInput,
   Alert,
   TouchableOpacity,
-  ScrollView,
+  Text,
+  StatusBar,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
-import FormButton from '../../components/FormButton';
+import React, {useEffect, useState} from 'react';
 import styles from './styles';
-import {AuthContext} from '../../navigation/AuthProvider';
 import Folder from '../../components/Folder';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import firestore from '@react-native-firebase/firestore';
+import uuid from 'react-native-uuid';
+import colors from '../../utils/colors';
 
 interface Folder {
-  id: number;
+  id: string;
   folder: string;
 }
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: any) => {
   const [folderName, setFolderName] = useState<string>('');
-  const [folders, setFolders] = useState<Folder[]>([
-    {
-      id: 1,
-      folder: 'asdfasdf',
-    },
-    {
-      id: 2,
-      folder: 'asnh mejt qua',
-    },
-  ]);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [loading, setLoading] = useState(true);
+  const ref = firestore().collection('folders');
+
+  const openFolder = (folder: any) => {
+    console.log(folder.folder);
+    navigation.navigate('FolderDetail', {
+      name: folder.folder,
+      id: folder.id,
+    });
+  };
 
   const addFolder = () => {
     if (folderName === '') {
       Alert.alert('Error', 'Please your folder name');
     } else {
+      let folderId: string = `${uuid.v4()}`;
       const newFolder: Folder = {
-        id: Math.random(),
+        id: folderId,
         folder: folderName,
       };
+      ref.doc(`${folderId}`).set({
+        id: folderId,
+        folder: folderName,
+      });
       setFolders([...folders, newFolder]);
       setFolderName('');
     }
   };
 
-  const handleDeleteFolder = (index: number) => {
+  useEffect(() => {
+    return ref.onSnapshot(querySnapshot => {
+      const list: Folder[] = [];
+      querySnapshot.forEach(doc => {
+        const {id, folder} = doc.data();
+        list.push({
+          id: id,
+          folder: folder,
+        });
+      });
+
+      setFolders(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+    });
+  }, [loading, ref]);
+
+  if (loading) {
+    return null; // or a spinner
+  }
+
+  const handleDeleteFolder = (item: any, index: number) => {
     Alert.alert('Thong bao!!!', 'Ban co chac muon xoa.', [
       {
         text: 'Ask me later',
@@ -59,13 +89,7 @@ const HomeScreen = () => {
       {
         text: 'OK',
         onPress: () => {
-          // let taskListTmp = [...taskList]
-          // taskListTmp.splice(index, 1)
-          // setTaskList(taskListTmp)
-          // dispatch(deleteTodo({
-          //   index: index,
-          //   content: content
-          // }))
+          ref.doc(item.id).delete();
           let foldersTmp = [...folders];
           foldersTmp.splice(index, 1);
           setFolders(foldersTmp);
@@ -74,40 +98,48 @@ const HomeScreen = () => {
     ]);
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <View style={styles.iconStyle}>
-          <AntDesign name="addfolder" size={25} color="#666" />
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.LIGHT} />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.textHeader}>Folders</Text>
         </View>
-        <TextInput
-          value={folderName}
-          style={styles.input}
-          numberOfLines={1}
-          onChangeText={setFolderName}
-          placeholder="Add Folder"
-          placeholderTextColor="#666"
-        />
-        <TouchableOpacity style={styles.iconStyle} onPress={addFolder}>
-          <AntDesign name="plus" size={25} color="#666" />
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <View style={styles.iconStyle}>
+            <AntDesign name="addfolder" size={25} color="#666" />
+          </View>
+          <TextInput
+            value={folderName}
+            style={styles.input}
+            numberOfLines={1}
+            onChangeText={setFolderName}
+            placeholder="Add Folder"
+            placeholderTextColor="#666"
+          />
+          <TouchableOpacity style={styles.iconStyle} onPress={addFolder}>
+            <AntDesign name="plus" size={25} color="#666" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.flatListContainer}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.folderContainer}
+            data={folders}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({item, index}) => (
+              <Folder
+                id={item.id}
+                folder={item.folder}
+                deleteFolder={() => {
+                  handleDeleteFolder(item, index);
+                }}
+                onPress={() => openFolder(item)}
+              />
+            )}
+          />
+        </View>
       </View>
-      <View style={{flex: 1}}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.folderContainer}
-          data={folders}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item, index}) => (
-            <Folder
-              folder={item.folder}
-              deleteFolder={() => {
-                handleDeleteFolder(index);
-              }}
-            />
-          )}
-        />
-      </View>
-    </View>
+    </>
   );
 };
 

@@ -1,7 +1,17 @@
 import {StyleSheet} from 'react-native';
+import colors from '../../utils/colors';
 import {windowHeight} from '../../utils/Dimentions';
 
 const styles = StyleSheet.create({
+  header: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  textHeader: {
+    fontSize: 30,
+    justifyContent: 'center',
+    color: colors.YELLOW,
+  },
   container: {
     backgroundColor: '#f9fafd',
     flex: 1,
@@ -46,6 +56,9 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingBottom: 10,
     width: '100%',
+  },
+  flatListContainer: {
+    flex: 1,
   },
 });
 

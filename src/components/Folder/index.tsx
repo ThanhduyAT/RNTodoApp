@@ -1,45 +1,59 @@
-import {Text, View, TouchableOpacity, TextInput} from 'react-native';
+import {View, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import firestore from '@react-native-firebase/firestore';
+import colors from '../../utils/colors';
 
-const Folder = ({folder, deleteFolder}: any) => {
-  // const [renameFolder, setRenameFolder] = useState<boolean>(false);
-  let renameFolder: boolean = false;
-  const [text, onChangeText] = useState<string>('');
+const Folder = ({id, folder, deleteFolder, onPress}: any) => {
+  const [renameFolder, setRenameFolder] = useState(false);
+  const [text, onChangeText] = useState<string>(folder);
+  const ref = firestore().collection('folders');
   const editFolder = () => {
     if (renameFolder) {
-      // setRenameFolder(false);
-      return (renameFolder = false);
+      setRenameFolder(false);
     } else {
-      // setRenameFolder(renameFolder);
-      return (renameFolder = true);
+      setRenameFolder(true);
     }
+    Keyboard.dismiss();
+  };
+  const handleRenameFolder = () => {
+    setRenameFolder(false);
+    ref.doc(id).update({
+      folder: text,
+    });
   };
 
   return (
-    <View style={styles.item}>
-      <View>
-        <AntDesign name="folder1" size={20} color="blue" />
+    <View style={styles.folderContainer}>
+      <View style={styles.iconFolderContainer}>
+        <AntDesign name="folder1" size={20} color={colors.BLUE_PICK} />
       </View>
-      <View style={{marginHorizontal: 20, flexShrink: 1}}>
+      <View style={styles.inputContainer}>
         <View>
-          <TextInput
-            value={folder}
-            onChangeText={onChangeText}
-            // editable={renameFolder}
-          />
+          <TouchableOpacity onPress={onPress}>
+            <TextInput
+              value={text}
+              onChangeText={onChangeText}
+              editable={renameFolder}
+              onEndEditing={handleRenameFolder}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={editFolder}>
           <View>
-            <AntDesign name="edit" size={20} color="red" />
+            {renameFolder ? (
+              <AntDesign name="check" size={20} color={colors.GREEN} />
+            ) : (
+              <AntDesign name="edit" size={20} color={colors.SELECTED} />
+            )}
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={deleteFolder}>
           <View>
-            <AntDesign name="delete" size={20} color="red" />
+            <AntDesign name="delete" size={20} color={colors.ERROR} />
           </View>
         </TouchableOpacity>
       </View>

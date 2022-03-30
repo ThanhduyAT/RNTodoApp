@@ -40,7 +40,7 @@ export const AuthProvider = ({children}: any) => {
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential);
           } catch (error) {
-            console.log({error})
+            console.log({error});
           }
         },
         register: async (email: string, password: string) => {
