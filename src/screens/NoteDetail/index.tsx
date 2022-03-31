@@ -75,8 +75,8 @@ const NoteDetail = (props: any) => {
   return (
     <>
       <ScrollView style={styles.container}>
-        <Text style={styles.title}>{note.title}</Text>
         <Text style={styles.time}>{`Create At ${formatDate(note.time)}`}</Text>
+        <Text style={styles.title}>{note.title}</Text>
         <Text style={styles.desc}>{note.desc}</Text>
       </ScrollView>
       <View style={styles.btnContainer}>

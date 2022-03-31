@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   StatusBar,
+  Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
@@ -14,6 +15,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 import colors from '../../utils/colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUser, isLogged} from '../../store/auth/selectors';
+import { requestSignOut } from '../../store/auth/actions';
 
 interface Folder {
   id: string;
@@ -25,6 +29,16 @@ const HomeScreen = ({navigation}: any) => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [loading, setLoading] = useState(true);
   const ref = firestore().collection('folders');
+
+  const userId = useSelector(getCurrentUser);
+  const logined = useSelector(isLogged);
+  // console.log(userId);
+
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(requestSignOut());
+  };
 
   const openFolder = (folder: any) => {
     console.log(folder.folder);
@@ -138,6 +152,9 @@ const HomeScreen = ({navigation}: any) => {
             )}
           />
         </View>
+        {/* <View>
+          <Button title="Sign Out" onPress={() => handleSignOut()} />
+        </View> */}
       </View>
     </>
   );

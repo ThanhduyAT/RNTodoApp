@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../screens/Account/Login';
-import {View} from 'react-native';
 import SignupScreen from '../screens/Account/SignUp';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OnboardingScreen from '../screens/OnBoarding';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import { RootStackParams } from '../models/app';
 
 const Stack = createStackNavigator();
+// const Stack = createNativeStackNavigator<RootStackParams>();
 
 const AuthStack = () => {
   let routeName: string;
@@ -15,7 +17,7 @@ const AuthStack = () => {
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then(value => {
       if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
+        AsyncStorage.setItem('alreadyLaunched', 'true');
         setIsFirstLaunch(true);
       } else {
         setIsFirstLaunch(false);
@@ -30,38 +32,19 @@ const AuthStack = () => {
   } else {
     routeName = 'Login';
   }
-
   return (
     <Stack.Navigator initialRouteName={routeName}>
+      <Stack.Screen
+        name="Onboarding"
+        component={OnboardingScreen}
+        options={{header: () => null}}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{header: () => null}}
       />
-      <Stack.Screen
-        name="Signup"
-        component={SignupScreen}
-        options={({navigation}) => ({
-          title: '',
-          headerStyle: {
-            backgroundColor: '#f9fafd',
-            shadowColor: '#f9fafd',
-            elevation: 0,
-          },
-          headerLeft: () => (
-            // eslint-disable-next-line react-native/no-inline-styles
-            <View style={{marginLeft: 10}}>
-              <FontAwesome.Button
-                name="long-arrow-left"
-                size={25}
-                backgroundColor="#f9fafd"
-                color="#333"
-                onPress={() => navigation.navigate('Login')}
-              />
-            </View>
-          ),
-        })}
-      />
+      <Stack.Screen name="Signup" component={SignupScreen} />
     </Stack.Navigator>
   );
 };

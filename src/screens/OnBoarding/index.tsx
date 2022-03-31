@@ -1,44 +1,47 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-
 import Onboarding from 'react-native-onboarding-swiper';
+// import {RootStackParams} from '../../models/app';
+// import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const Dots = ({selected}: any) => {
   let backgroundColor;
-
   backgroundColor = selected ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)';
-
   return (
     <View
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         width: 6,
         height: 6,
         marginHorizontal: 3,
-        backgroundColor,,
+        backgroundColor,
       }}
     />
   );
 };
 
 const Skip = ({...props}) => (
-  <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Skip</Text>
+  <TouchableOpacity style={styles.btn} {...props}>
+    <Text style={styles.textBtn}>Skip</Text>
   </TouchableOpacity>
 );
 
 const Next = ({...props}) => (
-  <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Next</Text>
+  <TouchableOpacity style={styles.btn} {...props}>
+    <Text style={styles.textBtn}>Next</Text>
   </TouchableOpacity>
 );
 
 const Done = ({...props}) => (
-  <TouchableOpacity style={{marginHorizontal: 10}} {...props}>
-    <Text style={{fontSize: 16}}>Done</Text>
+  <TouchableOpacity style={styles.btn} {...props}>
+    <Text style={styles.textBtn}>Done</Text>
   </TouchableOpacity>
 );
 
-const OnboardingScreen = ({navigation}) => {
+const OnboardingScreen = ({navigation}: any) => {
+  // const navigation =
+  //   useNavigation<NativeStackNavigationProp<RootStackParams>>();
   return (
     <Onboarding
       SkipButtonComponent={Skip}
@@ -50,21 +53,36 @@ const OnboardingScreen = ({navigation}) => {
       pages={[
         {
           backgroundColor: '#a6e4d0',
-          image: <Image source={require('../assets/onboarding-img1.png')} />,
-          title: 'Connect to the World',
-          subtitle: 'A New Way To Connect With The World',
+          image: (
+            <Image
+              source={require('../../assets/Android_robot.png')}
+              style={styles.stretch}
+            />
+          ),
+          title: 'Connect to Android',
+          subtitle: '',
         },
         {
           backgroundColor: '#fdeb93',
-          image: <Image source={require('../assets/onboarding-img2.png')} />,
-          title: 'Share Your Favorites',
-          subtitle: 'Share Your Thoughts With Similar Kind of People',
+          image: (
+            <Image
+              source={require('../../assets/33.png')}
+              style={styles.stretch}
+            />
+          ),
+          title: 'Connect to React Native',
+          subtitle: '',
         },
         {
           backgroundColor: '#e9bcbe',
-          image: <Image source={require('../assets/onboarding-img3.png')} />,
-          title: 'Become The Star',
-          subtitle: 'Let The Spot Light Capture You',
+          image: (
+            <Image
+              source={require('../../assets/22.png')}
+              style={styles.stretch}
+            />
+          ),
+          title: 'Connect to Firebase',
+          subtitle: '',
         },
       ]}
     />
@@ -78,5 +96,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  stretch: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  },
+  btn: {
+    marginHorizontal: 10,
+  },
+  textBtn: {
+    fontSize: 16,
   },
 });

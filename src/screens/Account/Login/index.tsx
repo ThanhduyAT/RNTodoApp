@@ -21,8 +21,6 @@ const LoginScreen = ({navigation}: any) => {
     }
   };
 
-  // const {login, googleLogin} = useContext(AuthContext);
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image

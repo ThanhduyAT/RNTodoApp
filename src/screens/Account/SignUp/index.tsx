@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import FormInput from '../../../components/FormInput';
 import FormButton from '../../../components/FormButton';
-import SocialButton from '../../../components/SocialButton';
 import {requestSignUpEmailPassword} from '../../../store/auth/actions';
 import styles from './styles';
 import {useDispatch} from 'react-redux';
@@ -14,6 +13,7 @@ const SignupScreen = ({navigation}: any) => {
 
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handleSignUp = (email: string, password: string) => {
     if (email && password && confirmPassword) {
       if (password === confirmPassword) {

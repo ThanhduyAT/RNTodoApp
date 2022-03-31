@@ -7,7 +7,6 @@ import NoteInputModal from '../../components/NoteInputModel';
 import Note from '../../components/Note';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
-import NotFound from '../../components/NotFound';
 
 interface Note {
   id: string;
@@ -22,7 +21,6 @@ const FolderDetail = ({route, navigation}: any) => {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [resultNotFound, setResultNotFound] = useState<boolean>(false);
   const ref = firestore().collection('folders');
 
   const handleOnSubmit = async (title: string, desc: string) => {
@@ -41,7 +39,6 @@ const FolderDetail = ({route, navigation}: any) => {
     setSearchQuery(text);
     if (!text.trim()) {
       setSearchQuery('');
-      setResultNotFound(false);
     }
   };
 
@@ -85,7 +82,6 @@ const FolderDetail = ({route, navigation}: any) => {
 
   const handleOnClear = async () => {
     setSearchQuery('');
-    setResultNotFound(false);
   };
 
   if (loading) {

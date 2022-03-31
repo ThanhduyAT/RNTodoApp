@@ -60,6 +60,19 @@ const styles = StyleSheet.create({
   flatListContainer: {
     flex: 1,
   },
+  logoutBtn: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    height: windowHeight / 15,
+    borderColor: '#ccc',
+    borderRadius: 3,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.ORANGE,
+  },
 });
 
 export default styles;

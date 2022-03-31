@@ -1,5 +1,5 @@
 import React from 'react';
-import Content from './src/navigation';
+import Routes from './src/navigation/Routes';
 import {Provider} from 'react-redux';
 import {LogBox} from 'react-native';
 import {configureStore} from './src/store';
@@ -13,7 +13,7 @@ const {store} = configureStore();
 const App = () => {
   return (
     <Provider store={store}>
-      <Content />
+      <Routes />
     </Provider>
   );
 };
