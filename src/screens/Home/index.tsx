@@ -7,6 +7,7 @@ import {
   Text,
   StatusBar,
   Button,
+  // Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
@@ -15,36 +16,45 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 import colors from '../../utils/colors';
-import {useDispatch, useSelector} from 'react-redux';
-import {getCurrentUser, isLogged} from '../../store/auth/selectors';
-import { requestSignOut } from '../../store/auth/actions';
+import {useDispatch} from 'react-redux';
+// import {getCurrentUser, isLogged} from '../../store/auth/selectors';
+import {requestSignOut} from '../../store/auth/actions';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParams} from '../../models/app';
+// import { useNavigation } from '@react-navigation/native';
+// import { signOutFirebase } from '../../store/auth/repository';
+
+type Props = NativeStackScreenProps<RootStackParams, 'Home'>;
 
 interface Folder {
   id: string;
   folder: string;
 }
 
-const HomeScreen = ({navigation}: any) => {
+const HomeScreen = ({navigation}: Props) => {
   const [folderName, setFolderName] = useState<string>('');
   const [folders, setFolders] = useState<Folder[]>([]);
   const [loading, setLoading] = useState(true);
   const ref = firestore().collection('folders');
 
-  const userId = useSelector(getCurrentUser);
-  const logined = useSelector(isLogged);
+  // const userId = useSelector(getCurrentUser);
+  // const logined = useSelector(isLogged);
   // console.log(userId);
 
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
+    // signOutFirebase().then(() => {
+    //   navigation.replace('Login');
+    // });
     dispatch(requestSignOut());
   };
 
-  const openFolder = (folder: any) => {
-    console.log(folder.folder);
+  const openFolder = (item: Folder) => {
+    console.log(item.folder);
     navigation.navigate('FolderDetail', {
-      name: folder.folder,
-      id: folder.id,
+      folderName: item.folder,
+      id: item.id,
     });
   };
 
@@ -139,11 +149,11 @@ const HomeScreen = ({navigation}: any) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.folderContainer}
             data={folders}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id}
             renderItem={({item, index}) => (
               <Folder
                 id={item.id}
-                folder={item.folder}
+                folderName={item.folder}
                 deleteFolder={() => {
                   handleDeleteFolder(item, index);
                 }}
@@ -152,9 +162,9 @@ const HomeScreen = ({navigation}: any) => {
             )}
           />
         </View>
-        {/* <View>
+        <View>
           <Button title="Sign Out" onPress={() => handleSignOut()} />
-        </View> */}
+        </View>
       </View>
     </>
   );

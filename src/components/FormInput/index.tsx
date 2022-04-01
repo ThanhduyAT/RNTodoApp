@@ -3,7 +3,14 @@ import {View, TextInput} from 'react-native';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const FormInput = ({labelValue, placeholderText, iconType, ...rest}: any) => {
+interface Props {
+  labelValue: string;
+  placeholderText: string;
+  iconType: string;
+  [rest: string]: any;
+}
+
+const FormInput = ({labelValue, placeholderText, iconType, ...rest}: Props) => {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.iconStyle}>

@@ -7,32 +7,39 @@ import NoteInputModal from '../../components/NoteInputModel';
 import Note from '../../components/Note';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParams} from '../../models/app';
 
-interface Note {
+type Props = NativeStackScreenProps<RootStackParams, 'FolderDetail'>;
+
+interface INote {
   id: string;
   title: string;
   desc: string;
   time: number;
 }
 
-const FolderDetail = ({route, navigation}: any) => {
-  const {name, id} = route.params;
+const FolderDetail = ({route, navigation}: Props) => {
+  const {folderName, id} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<INote[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const ref = firestore().collection('folders');
 
   const handleOnSubmit = async (title: string, desc: string) => {
     let noteId: string = `${uuid.v4()}`;
-    const newNote: Note = {id: noteId, title, desc, time: Date.now()};
+    const newNote: INote = {id: noteId, title, desc, time: Date.now()};
     const updatedNotes = [...notes, newNote];
     setNotes(updatedNotes);
-    ref.doc(id).collection(name).doc(`${noteId}`).set(newNote);
+    ref.doc(id).collection(folderName).doc(`${noteId}`).set(newNote);
   };
 
-  const openNote = (note: any) => {
-    navigation.navigate('NoteDetail', {note, id, name});
+  const openNote = (item: INote) => {
+    navigation.navigate('NoteDetail', {
+      folder: route.params,
+      note: item,
+    });
   };
 
   const handleOnSearchInput = (text: string) => {
@@ -45,9 +52,9 @@ const FolderDetail = ({route, navigation}: any) => {
   useEffect(() => {
     return ref
       .doc(id)
-      .collection(name)
+      .collection(folderName)
       .onSnapshot(querySnapshot => {
-        const list: Note[] = [];
+        const list: INote[] = [];
         querySnapshot.forEach(doc => {
           // eslint-disable-next-line @typescript-eslint/no-shadow
           const {id, title, desc, time} = doc.data();
@@ -59,7 +66,7 @@ const FolderDetail = ({route, navigation}: any) => {
           });
         });
 
-        let filteredNotes: Note[] = list.filter(note => {
+        let filteredNotes: INote[] = list.filter(note => {
           if (
             note.title.toLowerCase().includes(searchQuery.toLowerCase())
             // note.desc.toLowerCase().includes(text.toLowerCase())
@@ -90,7 +97,7 @@ const FolderDetail = ({route, navigation}: any) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.textHeader}>{name}</Text>
+        <Text style={styles.textHeader}>{folderName}</Text>
         {notes.length || searchQuery ? (
           <SearchBar
             value={searchQuery}
@@ -102,7 +109,7 @@ const FolderDetail = ({route, navigation}: any) => {
           data={notes}
           numColumns={2}
           columnWrapperStyle={styles.flatListContainer}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id}
           renderItem={({item}) => (
             <Note item={item} onPress={() => openNote(item)} />
           )}
@@ -126,6 +133,7 @@ const FolderDetail = ({route, navigation}: any) => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSubmit={handleOnSubmit}
+        note={undefined}
       />
     </>
   );

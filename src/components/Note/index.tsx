@@ -4,7 +4,19 @@ import colors from '../../utils/colors';
 import {windowWidth} from '../../utils/Dimentions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const Note = ({item, onPress}: any) => {
+interface INote {
+  title: string;
+  desc: string;
+  id: string;
+  time: number;
+}
+
+interface Props {
+  item: INote;
+  onPress: () => void;
+}
+
+const Note = ({item, onPress}: Props) => {
   const {title, desc} = item;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

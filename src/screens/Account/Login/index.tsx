@@ -5,13 +5,18 @@ import FormInput from '../../../components/FormInput';
 import styles from './styles';
 import {requestSignInEmailPassword} from '../../../store/auth/actions';
 import {useDispatch} from 'react-redux';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParams} from '../../../models/app';
 
-const LoginScreen = ({navigation}: any) => {
+type Props = NativeStackScreenProps<RootStackParams, 'Login'>;
+
+const LoginScreen = ({navigation}: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handleSignIn = (email: string, password: string) => {
     if (email && password) {
       const user = {email, password};

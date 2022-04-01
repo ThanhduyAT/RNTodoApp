@@ -1,9 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-// import {RootStackParams} from '../../models/app';
-// import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParams} from '../../models/app';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const Dots = ({selected}: any) => {
   let backgroundColor;
@@ -39,9 +38,9 @@ const Done = ({...props}) => (
   </TouchableOpacity>
 );
 
-const OnboardingScreen = ({navigation}: any) => {
-  // const navigation =
-  //   useNavigation<NativeStackNavigationProp<RootStackParams>>();
+type Props = NativeStackScreenProps<RootStackParams, 'Onboarding'>;
+
+const OnboardingScreen = ({navigation}: Props) => {
   return (
     <Onboarding
       SkipButtonComponent={Skip}

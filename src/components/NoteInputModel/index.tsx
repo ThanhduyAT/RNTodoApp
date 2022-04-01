@@ -10,8 +10,15 @@ import {
 import React, {useEffect, useState} from 'react';
 import RoundIconBtn from '../RoundIconBtn';
 import styles from './styles';
+interface Props {
+  visible: boolean;
+  onClose?: any;
+  onSubmit: (title: string, desc: string, time: number) => void;
+  note: any;
+  isEdit?: boolean;
+}
 
-const NoteInputModal = ({visible, onClose, onSubmit, note, isEdit}: any) => {
+const NoteInputModal = ({visible, onClose, onSubmit, note, isEdit}: Props) => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const handleModalClose = () => {
@@ -43,7 +50,7 @@ const NoteInputModal = ({visible, onClose, onSubmit, note, isEdit}: any) => {
     if (isEdit) {
       onSubmit(title, desc, Date.now());
     } else {
-      onSubmit(title, desc);
+      onSubmit(title, desc, Date.now());
       setTitle('');
       setDesc('');
     }
@@ -71,7 +78,6 @@ const NoteInputModal = ({visible, onClose, onSubmit, note, isEdit}: any) => {
 
             <RoundIconBtn
               size={15}
-              color
               style={styles.closeIcon}
               antIconName="close"
               onPress={closeModal}

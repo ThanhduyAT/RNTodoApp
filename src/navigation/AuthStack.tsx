@@ -23,7 +23,11 @@ const AuthStack = () => {
         setIsFirstLaunch(false);
       }
     });
-  }, []);
+
+    return () => {
+      isFirstLaunch;
+    };
+  }, [isFirstLaunch]);
 
   if (isFirstLaunch === null) {
     return null;

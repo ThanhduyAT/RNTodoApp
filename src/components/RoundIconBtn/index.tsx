@@ -3,7 +3,15 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../utils/colors';
 import styles from './styles';
 
-const RoundIconBtn = ({antIconName, size, color, style, onPress}: any) => {
+interface Props {
+  antIconName: string;
+  size?: number;
+  color?: string;
+  [style: string]: any;
+  onPress: any;
+}
+
+const RoundIconBtn = ({antIconName, size, color, style, onPress}: Props) => {
   return (
     <AntDesign
       name={antIconName}

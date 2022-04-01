@@ -4,12 +4,12 @@ import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useSelector} from 'react-redux';
-import {getCurrentUser} from '../store/auth/selectors';
+import {isLogged} from '../store/auth/selectors';
 
 const Routes = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const userId = useSelector(getCurrentUser);
+  const logIn = useSelector(isLogged);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(userState => {
@@ -20,11 +20,11 @@ const Routes = () => {
       }
     });
     return subscriber;
-  }, [loading, userId]);
+  }, [loading]);
 
   return (
     <NavigationContainer>
-      {user ? <AppStack /> : <AuthStack />}
+      {user && logIn ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

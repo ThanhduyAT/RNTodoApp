@@ -5,7 +5,14 @@ import {TextInput} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../utils/colors';
 
-const SearchBar = ({containerStyle, value, onChangeText, onClear}: any) => {
+interface Prop {
+  [containerStyle: string]: any;
+  value: string;
+  onChangeText: (text: string) => void;
+  onClear: () => void;
+}
+
+const SearchBar = ({containerStyle, value, onChangeText, onClear}: Prop) => {
   return (
     <View style={[styles.container, {...containerStyle}]}>
       <TextInput

@@ -5,9 +5,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import firestore from '@react-native-firebase/firestore';
 import colors from '../../utils/colors';
 
-const Folder = ({id, folder, deleteFolder, onPress}: any) => {
+interface Props {
+  id: string;
+  folderName: string;
+  deleteFolder: () => void;
+  onPress: () => void;
+}
+
+const Folder = ({id, folderName, deleteFolder, onPress}: Props) => {
   const [renameFolder, setRenameFolder] = useState(false);
-  const [text, onChangeText] = useState<string>(folder);
+  const [text, onChangeText] = useState<string>(folderName);
   const ref = firestore().collection('folders');
   const editFolder = () => {
     if (renameFolder) {

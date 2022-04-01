@@ -5,8 +5,12 @@ import FormButton from '../../../components/FormButton';
 import {requestSignUpEmailPassword} from '../../../store/auth/actions';
 import styles from './styles';
 import {useDispatch} from 'react-redux';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParams} from '../../../models/app';
 
-const SignupScreen = ({navigation}: any) => {
+type Props = NativeStackScreenProps<RootStackParams, 'Signup'>;
+
+const SignupScreen = ({navigation}: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -30,7 +34,6 @@ const SignupScreen = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Create an account</Text>
-
       <FormInput
         labelValue={email}
         onChangeText={(userEmail: string) => setEmail(userEmail)}
@@ -40,7 +43,6 @@ const SignupScreen = ({navigation}: any) => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-
       <FormInput
         labelValue={password}
         onChangeText={(userPassword: string) => setPassword(userPassword)}
@@ -57,7 +59,6 @@ const SignupScreen = ({navigation}: any) => {
         iconType="lock"
         secureTextEntry={true}
       />
-
       <FormButton
         buttonTitle="Sign Up"
         onPress={() => handleSignUp(email, password)}
