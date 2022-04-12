@@ -8,11 +8,16 @@ import colors from '../../utils/colors';
 interface Props {
   id: string;
   folderName: string;
-  deleteFolder: () => void;
+  deleteFolderssss: () => void;
   onPress: () => void;
 }
 
-const Folder = ({id, folderName, deleteFolder, onPress}: Props) => {
+const Folder = ({
+  id,
+  folderName,
+  deleteFolderssss: deleteFolder,
+  onPress,
+}: Props) => {
   const [renameFolder, setRenameFolder] = useState(false);
   const [text, onChangeText] = useState<string>(folderName);
   const ref = firestore().collection('folders');

@@ -5,6 +5,7 @@ import AppStack from './AppStack';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useSelector} from 'react-redux';
 import {isLogged} from '../store/auth/selectors';
+import {ActivityIndicator} from 'react-native';
 
 const Routes = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,11 +21,11 @@ const Routes = () => {
       }
     });
     return subscriber;
-  }, [loading]);
+  }, [loading, logIn]);
 
   return (
     <NavigationContainer>
-      {user && logIn ? <AppStack /> : <AuthStack />}
+      {loading ? <ActivityIndicator /> : user ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

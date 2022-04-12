@@ -11,8 +11,8 @@ const Dots = ({selected}: any) => {
     <View
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
-        width: 6,
-        height: 6,
+        width: 20,
+        height: 20,
         marginHorizontal: 3,
         backgroundColor,
       }}

@@ -1,4 +1,4 @@
-export default { 
+export default {
   DARK: '#1E1E1E',
   LIGHT: '#FFF',
   PRIMARY: '#DBB2FF',
@@ -25,4 +25,4 @@ export default {
   CYAN: '#17a2b8',
   BROWN: '#8B572A',
   DARK_BLUE: '#1A94F3',
-}
+};

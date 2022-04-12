@@ -154,7 +154,7 @@ const HomeScreen = ({navigation}: Props) => {
               <Folder
                 id={item.id}
                 folderName={item.folder}
-                deleteFolder={() => {
+                deleteFolderssss={() => {
                   handleDeleteFolder(item, index);
                 }}
                 onPress={() => openFolder(item)}

@@ -42,7 +42,7 @@ export function* requestSignOutSaga(): any {
   try {
     const isLogged = yield select(authSelectors.isLogged);
 
-    if (isLogged) {
+    if (!isLogged) {
       yield call(signOutFirebase);
     }
     yield put(signOut());

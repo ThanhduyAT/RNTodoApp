@@ -15,17 +15,19 @@ const AuthStack = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState<any>(null);
 
   useEffect(() => {
+    let mounted = true;
     AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true');
-        setIsFirstLaunch(true);
-      } else {
-        setIsFirstLaunch(false);
+      if (mounted) {
+        if (value == null) {
+          AsyncStorage.setItem('alreadyLaunched', 'true');
+          setIsFirstLaunch(true);
+        } else {
+          setIsFirstLaunch(false);
+        }
       }
     });
-
     return () => {
-      isFirstLaunch;
+      mounted = false;
     };
   }, [isFirstLaunch]);
 
